@@ -2,7 +2,7 @@ import * as React from 'react';
 import { KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, View, Text, StyleSheet, Image } from 'react-native';
 import { Button } from '../../../../components';
 import { useMosqueStore } from '../../../../store/form';
-import MosqueController from '../../../../store/sqliteDb2';
+import MosqueController from '../../../../store/sqlite';
 import { useSQLiteContext } from 'expo-sqlite';
 
 const Preview = ({ navigation }: any) => {

@@ -17,7 +17,7 @@ const queryClient = new QueryClient();
 
 export default function App() {
   return (
-    <SQLiteProvider databaseName="kadgis_enumeration.db">
+    <SQLiteProvider databaseName="kadgis_enum.db">
       <QueryClientProvider client={queryClient}>
         <ActivityWrapper>
           <AppContent />

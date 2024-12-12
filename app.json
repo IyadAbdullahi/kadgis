@@ -4,10 +4,10 @@
     "slug": "kadgis_enumurator",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/jibwis_logo.png",
+    "icon": "./assets/kadgis_logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/jibwis_logo.png",
+      "image": "./assets/kadgis_logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -16,7 +16,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/jibwis_logo.png",
+        "foregroundImage": "./assets/kadgis_logo.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.ujere.jibwis_enumurator"

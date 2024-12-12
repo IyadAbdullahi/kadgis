@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, ScrollView, Text, View, StyleSheet, FlatList } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
-import MosqueController from '../../../store/sqliteDb2';
-import { Mosque } from '../../../store/form';
+import KadgisController from '../../../store/sqliteDb';
+import { KadgisEnumeration } from '../../../store/form';
 
 interface MosqueProps {
-  mosque: Mosque;
+  mosque: KadgisEnumeration;
 }
 
 const MosqueItem: React.FC<MosqueProps> = ({ mosque }) => (
   <View style={styles.mosqueItemContainer}>
     <View style={styles.mosqueItemHeader}>
       <Text style={styles.mosqueName}>{mosque.name}</Text>
-      <View style={[styles.statusContainer, mosque.published ? styles.published : styles.unpublished]}>
-        <View style={[styles.statusDot, mosque.published ? styles.publishedDot : styles.unpublishedDot]} />
-        <Text style={styles.statusText}>{mosque.published ? 'Remote' : 'Local'}</Text>
+      <View style={[styles.statusContainer, mosque.name ? styles.published : styles.unpublished]}>
+        <View style={[styles.statusDot, mosque.name ? styles.publishedDot : styles.unpublishedDot]} />
+        <Text style={styles.statusText}>{mosque.name ? 'Remote' : 'Local'}</Text>
       </View>
     </View>
     <Text style={styles.dateText}>{new Date().toISOString()}</Text>
@@ -29,10 +29,10 @@ const Uploads: React.FC<{ navigation: any }> = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const mosqueController = await MosqueController.getInstance(db);
-        const total = await mosqueController.countMosques();
+        const mosqueController = await KadgisController.getInstance(db);
+        const total = await mosqueController.countProperty();
         setRecordStats(total);
-        const allMosques = await mosqueController.getAllMosques();
+        const allMosques = await mosqueController.getAllRecords();
         setMosquesArr(allMosques);
       } catch (error) {
         console.error('Error fetching mosques:', error);

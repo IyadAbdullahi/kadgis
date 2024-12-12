@@ -18,7 +18,7 @@ class KadgisController {
 
     private async setupDatabase() {
         await this.db.execAsync(`
-            CREATE TABLE IF NOT EXISTS kadgis_data1 (
+            CREATE TABLE IF NOT EXISTS kadgis (
                 id TEXT PRIMARY KEY NOT NULL,
                 date TEXT,
                 plotNumber TEXT,
@@ -89,7 +89,7 @@ class KadgisController {
         const id = this.generateId();
 
         await this.db.runAsync(
-            `INSERT INTO kadgis_data1 (
+            `INSERT INTO kadgis (
                 id, date, plotNumber, name, gender, maritalStatus, dob, nationality, 
                 stateOfOrigin, lga, email, nin, bvn, phoneNumber1, phoneNumber2, landSize, landUse, 
                 landPurpose, propertyType, propertyOccupancy, accessAllowed, numberOfBuildings, numberOfOccupants, street, pictures, latitude, 
@@ -133,7 +133,7 @@ class KadgisController {
     // Get a single record by ID
     async getRecordById(id: string): Promise<any | null> {
         const result = await this.db.getFirstAsync<any>(
-            `SELECT * FROM kadgis_data WHERE id = ?`,
+            `SELECT * FROM kadgis WHERE id = ?`,
             [id]
         );
         return result ? { ...result, accessAllowed: !!result.accessAllowed } : null;
@@ -173,23 +173,23 @@ class KadgisController {
         }>
     ) {
         const keys = Object.keys(updatedData);
-        const values = keys.map((key) => updatedData[key]);
+        const values = keys.map((key: any) => updatedData[key]);
         const placeholders = keys.map((key) => `${key} = ?`).join(", ");
 
         await this.db.runAsync(
-            `UPDATE kadgis_data SET ${placeholders}, updatedAt = CURRENT_TIMESTAMP WHERE id = ?`,
+            `UPDATE kadgis SET ${placeholders}, updatedAt = CURRENT_TIMESTAMP WHERE id = ?`,
             [...values, id]
         );
     }
 
     // Delete a record by ID
     async deleteRecordById(id: string) {
-        await this.db.runAsync(`DELETE FROM kadgis_data WHERE id = ?`, [id]);
+        await this.db.runAsync(`DELETE FROM kadgis WHERE id = ?`, [id]);
     }
 
     // Retrieve all records
     async getAllRecords(): Promise<any[]> {
-        const results = await this.db.getAllAsync<any>(`SELECT * FROM kadgis_data`);
+        const results = await this.db.getAllAsync<any>(`SELECT * FROM kadgis`);
         return results.map((result) => ({
             ...result,
             accessAllowed: !!result.accessAllowed,
@@ -199,7 +199,7 @@ class KadgisController {
     // Search records
     async searchRecords(keyword: string): Promise<any[]> {
         const results = await this.db.getAllAsync<any>(
-            `SELECT * FROM kadgis_data WHERE name LIKE ? OR plotNumber LIKE ?`,
+            `SELECT * FROM kadgis WHERE name LIKE ? OR plotNumber LIKE ?`,
             [`%${keyword}%`, `%${keyword}%`]
         );
         return results.map((result) => ({
@@ -210,13 +210,13 @@ class KadgisController {
 
     // Delete all records
     async deleteAllRecords() {
-        await this.db.runAsync(`DELETE FROM kadgis_data`);
+        await this.db.runAsync(`DELETE FROM kadgis`);
     }
 
     // Check if a record exists by ID
     async doesRecordExist(id: string): Promise<boolean> {
         const result = await this.db.getFirstAsync<{ count: number }>(
-            `SELECT COUNT(*) as count FROM kadgis_data WHERE id = ?`,
+            `SELECT COUNT(*) as count FROM kadgis WHERE id = ?`,
             [id]
         );
         return result.count > 0;
@@ -229,7 +229,7 @@ class KadgisController {
     // count property
     async countProperty(): Promise<number> {
         const result = await this.db.getFirstAsync<{ count: number }>(
-            'SELECT COUNT(*) as count FROM kadgis_data1'
+            'SELECT COUNT(*) as count FROM kadgis'
         );
         return result.count;
     }
@@ -238,7 +238,7 @@ class KadgisController {
         const counts = await Promise.all(
             types.map(async (type) => {
                 const result = await this.db.getFirstAsync<{ count: number }>(
-                    `SELECT COUNT(*) as count FROM kadgis_data1 WHERE landUse = ?`,
+                    `SELECT COUNT(*) as count FROM kadgis WHERE landUse = ?`,
                     type
                 );
                 return { type, count: result.count };

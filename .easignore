@@ -1,0 +1,13 @@
+.expo
+node_modules
+android
+# Copy everything from your .gitignore file here
+
+# Additional ignores specific to EAS builds
+
+# Ignore native folders (if you are using EAS Build)
+/android
+/ios
+
+# Ignore test coverage reports
+/coverage

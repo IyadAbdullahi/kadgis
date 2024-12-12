@@ -1,0 +1,1 @@
+export const  base_url = "https://jibwis.prismaforge.ng/api/v1"
